@@ -7,6 +7,10 @@ import (
 )
 
 const (
+	preparedInsertPeople = "insertPeople"
+	preparedUpdatePeople = "updatePeople"
+	preparedDeletePeople = "deletePeople"
+
 	stmtInitPeople = `
 CREATE TABLE people
 (
@@ -41,9 +45,39 @@ SELECT id,
        tiktok
 FROM people
 `
+	stmtInsertPeople = `
+INSERT INTO people (id, name, birthday, phone, cmnd, bhxh, mst, address, university, vng, facebook, instagram, tiktok)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`
+	stmtUpdatePeople = `
+UPDATE people
+SET name       = ?,
+    birthday   = ?,
+    phone      = ?,
+    cmnd       = ?,
+    bhxh       = ?,
+    mst        = ?,
+    address    = ?,
+    university = ?,
+    vng        = ?,
+    facebook   = ?,
+    instagram  = ?,
+    tiktok     = ?
+WHERE id = ?
+`
+	stmtDeletePeople = `
+DELETE
+FROM people
+WHERE id = ?
+`
 )
 
-type Repository interface{}
+type Repository interface {
+	GetPeople(ctx context.Context) ([]Person, error)
+	InsertPeople(ctx context.Context, person Person) error
+	UpdatePeople(ctx context.Context, person Person) error
+	DeletePeople(ctx context.Context, id string) error
+}
 
 type repo struct {
 	db *sql.DB
@@ -60,7 +94,22 @@ func NewRepository(ctx context.Context, db *sql.DB, shouldInitDatabase bool) (Re
 		}
 	}
 
+	var err error
 	preparedStmts := make(map[string]*sql.Stmt)
+	preparedStmts[preparedInsertPeople], err = db.PrepareContext(ctx, stmtInsertPeople)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
+
+	preparedStmts[preparedUpdatePeople], err = db.PrepareContext(ctx, stmtUpdatePeople)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
+
+	preparedStmts[preparedDeletePeople], err = db.PrepareContext(ctx, stmtDeletePeople)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
 
 	return &repo{
 		db:            db,
@@ -104,4 +153,56 @@ func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
 	}
 
 	return people, nil
+}
+
+func (r *repo) InsertPeople(ctx context.Context, person Person) error {
+	if _, err := r.preparedStmts[preparedInsertPeople].ExecContext(ctx,
+		person.ID,
+		person.Name,
+		person.Birthday,
+		person.Phone,
+		person.CMND,
+		person.MST,
+		person.BHXH,
+		person.Address,
+		person.University,
+		person.VNG,
+		person.Facebook,
+		person.Instagram,
+		person.Tiktok,
+	); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
+}
+
+func (r *repo) UpdatePeople(ctx context.Context, person Person) error {
+	if _, err := r.preparedStmts[preparedUpdatePeople].ExecContext(ctx,
+		person.Name,
+		person.Birthday,
+		person.Phone,
+		person.CMND,
+		person.MST,
+		person.BHXH,
+		person.Address,
+		person.University,
+		person.VNG,
+		person.Facebook,
+		person.Instagram,
+		person.Tiktok,
+		person.ID,
+	); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
+}
+
+func (r *repo) DeletePeople(ctx context.Context, id string) error {
+	if _, err := r.preparedStmts[preparedDeletePeople].ExecContext(ctx, id); err != nil {
+		return fmt.Errorf("database failed to exec: %w", err)
+	}
+
+	return nil
 }

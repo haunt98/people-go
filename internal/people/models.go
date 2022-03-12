@@ -6,10 +6,12 @@ type Person struct {
 	Birthday *string `json:"birthday"`
 	Phone    *string `json:"phone"`
 
-	// Vietnam
-	CMND       *string `json:"cmnd"`
-	MST        *string `json:"mst"`  // Ma so thue
-	BHXH       *string `json:"bhxh"` // Bao hiem xa hoi
+	// Chung minh nhan dan
+	CMND *string `json:"cmnd"`
+	// Ma so thue
+	MST *string `json:"mst"`
+	// Bao hiem xa hoi
+	BHXH       *string `json:"bhxh"`
 	Address    *string `json:"address"`
 	University *string `json:"university"`
 
