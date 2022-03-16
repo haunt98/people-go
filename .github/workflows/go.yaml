@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: "~1.18"
-      - run: go build ./cmd/invest
+      - run: go build ./cmd/people
   golangci-lint:
     name: golangci-lint
     runs-on: ubuntu-latest
