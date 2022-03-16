@@ -35,12 +35,12 @@ func (s *service) List(ctx context.Context) ([]Person, error) {
 		return nil, fmt.Errorf("failed to get people: %w", err)
 	}
 
-	for _, person := range people {
+	for i, person := range people {
 		if person.Birthday == "" {
 			continue
 		}
 
-		person.Birthday, err = dateToOutput(person.Birthday, s.location)
+		people[i].Birthday, err = dateToOutput(person.Birthday, s.location)
 		if err != nil {
 			return nil, fmt.Errorf("failed to output date %s: %w", person.Birthday, err)
 		}

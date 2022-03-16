@@ -21,6 +21,10 @@ func (a *action) RunAdd(c *cli.Context) error {
 	return a.peopleHandler.Add(c.Context)
 }
 
+func (a *action) RunUpdate(c *cli.Context) error {
+	return a.peopleHandler.Update(c.Context)
+}
+
 func (a *action) RunRemove(c *cli.Context) error {
 	return a.peopleHandler.Remove(c.Context)
 }

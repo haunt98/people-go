@@ -19,11 +19,13 @@ const (
 	commandList   = "list"
 	commandGet    = "get"
 	commandAdd    = "add"
+	commandUpdate = "update"
 	commandRemove = "remove"
 
 	usageList   = "list people"
 	usageGet    = "get person"
 	usageAdd    = "add person"
+	usageUpdate = "update person"
 	usageRemove = "remove person"
 )
 
@@ -57,6 +59,11 @@ func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App,
 				Name:   commandAdd,
 				Usage:  usageAdd,
 				Action: a.RunAdd,
+			},
+			{
+				Name:   commandUpdate,
+				Usage:  usageUpdate,
+				Action: a.RunUpdate,
 			},
 			{
 				Name:   commandRemove,
