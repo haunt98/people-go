@@ -22,9 +22,10 @@ type service struct {
 	location *time.Location
 }
 
-func NewService(repo Repository) Service {
+func NewService(repo Repository, location *time.Location) Service {
 	return &service{
-		repo: repo,
+		repo:     repo,
+		location: location,
 	}
 }
 

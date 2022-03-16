@@ -9,17 +9,24 @@ import (
 	"github.com/make-go-great/ioe-go"
 )
 
-type Handler struct {
+type Handler interface {
+	List(ctx context.Context) error
+	Add(ctx context.Context) error
+	Update(ctx context.Context) error
+	Remove(ctx context.Context) error
+}
+
+type handler struct {
 	service Service
 }
 
-func NewHandler(service Service) *Handler {
-	return &Handler{
+func NewHandler(service Service) Handler {
+	return &handler{
 		service: service,
 	}
 }
 
-func (h *Handler) List(ctx context.Context) error {
+func (h *handler) List(ctx context.Context) error {
 	people, err := h.service.List(ctx)
 	if err != nil {
 		return err
@@ -65,7 +72,7 @@ func (h *Handler) List(ctx context.Context) error {
 	return nil
 }
 
-func (h *Handler) Add(ctx context.Context) error {
+func (h *handler) Add(ctx context.Context) error {
 	person := Person{}
 
 	fmt.Printf("Input name: ")
@@ -105,7 +112,7 @@ func (h *Handler) Add(ctx context.Context) error {
 	return h.service.Add(ctx, person)
 }
 
-func (h *Handler) Update(ctx context.Context) error {
+func (h *handler) Update(ctx context.Context) error {
 	fmt.Printf("Input ID: ")
 	id := ioe.ReadInput()
 
@@ -186,7 +193,7 @@ func (h *Handler) Update(ctx context.Context) error {
 	return h.service.Update(ctx, person)
 }
 
-func (h *Handler) Remove(ctx context.Context) error {
+func (h *handler) Remove(ctx context.Context) error {
 	fmt.Printf("Input ID: ")
 	id := ioe.ReadInput()
 
