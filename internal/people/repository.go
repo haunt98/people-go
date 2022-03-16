@@ -7,6 +7,7 @@ import (
 )
 
 const (
+	preparedGetPerson    = "getPerson"
 	preparedInsertPeople = "insertPeople"
 	preparedUpdatePeople = "updatePeople"
 	preparedDeletePeople = "deletePeople"
@@ -21,7 +22,6 @@ CREATE TABLE people
     cmnd       TEXT,
     bhxh       TEXT,
     mst        TEXT,
-    address    TEXT,
     university TEXT,
     vng        TEXT,
     facebook   TEXT,
@@ -37,7 +37,6 @@ SELECT id,
        cmnd,
        bhxh,
        mst,
-       address,
        university,
        vng,
        facebook,
@@ -45,9 +44,25 @@ SELECT id,
        tiktok
 FROM people
 `
+	stmtGetPerson = `
+SELECT id,
+       name,
+       birthday,
+       phone,
+       cmnd,
+       bhxh,
+       mst,
+       university,
+       vng,
+       facebook,
+       instagram,
+       tiktok
+FROM people
+WHERE id = ?
+`
 	stmtInsertPeople = `
-INSERT INTO people (id, name, birthday, phone, cmnd, bhxh, mst, address, university, vng, facebook, instagram, tiktok)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+INSERT INTO people (id, name, birthday, phone, cmnd, bhxh, mst, university, vng, facebook, instagram, tiktok)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `
 	stmtUpdatePeople = `
 UPDATE people
@@ -57,7 +72,6 @@ SET name       = ?,
     cmnd       = ?,
     bhxh       = ?,
     mst        = ?,
-    address    = ?,
     university = ?,
     vng        = ?,
     facebook   = ?,
@@ -74,6 +88,7 @@ WHERE id = ?
 
 type Repository interface {
 	GetPeople(ctx context.Context) ([]Person, error)
+	GetPerson(ctx context.Context, id string) (Person, error)
 	InsertPeople(ctx context.Context, person Person) error
 	UpdatePeople(ctx context.Context, person Person) error
 	DeletePeople(ctx context.Context, id string) error
@@ -97,6 +112,11 @@ func NewRepository(ctx context.Context, db *sql.DB, shouldInitDatabase bool) (Re
 	var err error
 	preparedStmts := make(map[string]*sql.Stmt)
 	preparedStmts[preparedInsertPeople], err = db.PrepareContext(ctx, stmtInsertPeople)
+	if err != nil {
+		return nil, fmt.Errorf("database failed to prepare context: %w", err)
+	}
+
+	preparedStmts[preparedGetPerson], err = db.PrepareContext(ctx, stmtGetPerson)
 	if err != nil {
 		return nil, fmt.Errorf("database failed to prepare context: %w", err)
 	}
@@ -136,7 +156,6 @@ func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
 			&person.CMND,
 			&person.MST,
 			&person.BHXH,
-			&person.Address,
 			&person.University,
 			&person.VNG,
 			&person.Facebook,
@@ -155,6 +174,34 @@ func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
 	return people, nil
 }
 
+func (r *repo) GetPerson(ctx context.Context, id string) (Person, error) {
+	person := Person{}
+
+	row := r.preparedStmts[preparedGetPerson].QueryRowContext(ctx, id)
+	if err := row.Scan(
+		&person.ID,
+		&person.Name,
+		&person.Birthday,
+		&person.Phone,
+		&person.CMND,
+		&person.MST,
+		&person.BHXH,
+		&person.University,
+		&person.VNG,
+		&person.Facebook,
+		&person.Instagram,
+		&person.Tiktok,
+	); err != nil {
+		if err == sql.ErrNoRows {
+			return Person{}, fmt.Errorf("person %s not exist", id)
+		}
+
+		return Person{}, fmt.Errorf("database failed to scan row: %w", err)
+	}
+
+	return person, nil
+}
+
 func (r *repo) InsertPeople(ctx context.Context, person Person) error {
 	if _, err := r.preparedStmts[preparedInsertPeople].ExecContext(ctx,
 		person.ID,
@@ -164,7 +211,6 @@ func (r *repo) InsertPeople(ctx context.Context, person Person) error {
 		person.CMND,
 		person.MST,
 		person.BHXH,
-		person.Address,
 		person.University,
 		person.VNG,
 		person.Facebook,
@@ -185,7 +231,6 @@ func (r *repo) UpdatePeople(ctx context.Context, person Person) error {
 		person.CMND,
 		person.MST,
 		person.BHXH,
-		person.Address,
 		person.University,
 		person.VNG,
 		person.Facebook,
