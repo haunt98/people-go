@@ -96,6 +96,14 @@ func (s *service) Update(ctx context.Context, person Person) error {
 		return err
 	}
 
+	if person.Birthday != "" {
+		var err error
+		person.Birthday, err = dateFromInput(person.Birthday, s.location)
+		if err != nil {
+			return fmt.Errorf("failed to input date %s: %w", person.Birthday, err)
+		}
+	}
+
 	if err := s.repo.UpdatePeople(ctx, person); err != nil {
 		return fmt.Errorf("failed to update people: %w", err)
 	}
