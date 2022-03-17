@@ -9,8 +9,14 @@ import (
 // Copy from https://github.com/haunt98/invest-go
 
 var dateFormats = []string{
+	"02-01-2006",
+	"02/01/2006",
+	"02.01.2006",
+	"02 01 2006",
 	"2006-01-02",
 	"2006/01/02",
+	"2006.01.02",
+	"2006 01 02",
 }
 
 func dateFromInput(date string, location *time.Location) (string, error) {
