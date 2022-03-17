@@ -17,13 +17,11 @@ const (
 	usage = "tracking people"
 
 	commandList   = "list"
-	commandGet    = "get"
 	commandAdd    = "add"
 	commandUpdate = "update"
 	commandRemove = "remove"
 
 	usageList   = "list people"
-	usageGet    = "get person"
 	usageAdd    = "add person"
 	usageUpdate = "update person"
 	usageRemove = "remove person"
