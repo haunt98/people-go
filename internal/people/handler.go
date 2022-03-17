@@ -94,7 +94,7 @@ func (h *handler) Add(ctx context.Context) error {
 	fmt.Printf("Input BHXH: ")
 	person.BHXH = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input university: ")
+	fmt.Printf("Input University: ")
 	person.University = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input VNG: ")
@@ -160,7 +160,7 @@ func (h *handler) Update(ctx context.Context) error {
 		person.BHXH = val
 	}
 
-	fmt.Printf("Input university, current is %s: ", person.University)
+	fmt.Printf("Input University, current is %s: ", person.University)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.University = val
