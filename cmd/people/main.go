@@ -54,7 +54,7 @@ func getDataDirPath() string {
 	return filepath.Join(xdg.GetDataHome(), cli.Name)
 }
 
-// Shoulde be ~/.local/share/people/data.sqlite3
+// Should be ~/.local/share/people/data.sqlite3
 func getDataFilePath() string {
 	return filepath.Join(xdg.GetDataHome(), cli.Name, dataFilename)
 }
