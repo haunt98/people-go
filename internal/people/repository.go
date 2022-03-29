@@ -13,7 +13,7 @@ const (
 	preparedDeletePeople = "deletePeople"
 
 	stmtInitPeople = `
-CREATE TABLE people
+CREATE TABLE IF NOT EXISTS people
 (
     id         TEXT PRIMARY KEY,
     name       TEXT NOT NULL,
@@ -102,11 +102,9 @@ type repo struct {
 	preparedStmts map[string]*sql.Stmt
 }
 
-func NewRepository(ctx context.Context, db *sql.DB, shouldInitDatabase bool) (Repository, error) {
-	if shouldInitDatabase {
-		if _, err := db.ExecContext(ctx, stmtInitPeople); err != nil {
-			return nil, fmt.Errorf("database failed to exec: %w", err)
-		}
+func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
+	if _, err := db.ExecContext(ctx, stmtInitPeople); err != nil {
+		return nil, fmt.Errorf("database failed to exec: %w", err)
 	}
 
 	var err error

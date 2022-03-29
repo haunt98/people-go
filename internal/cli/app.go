@@ -31,8 +31,8 @@ type App struct {
 	cliApp *cli.App
 }
 
-func NewApp(db *sql.DB, shouldInitDatabase bool, location *time.Location) (*App, error) {
-	peopleRepo, err := people.NewRepository(context.Background(), db, shouldInitDatabase)
+func NewApp(db *sql.DB, location *time.Location) (*App, error) {
+	peopleRepo, err := people.NewRepository(context.Background(), db)
 	if err != nil {
 		return nil, fmt.Errorf("failed to new repository: %w", err)
 	}
