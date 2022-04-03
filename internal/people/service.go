@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/make-go-great/date-go"
 )
 
 type Service interface {
@@ -40,7 +41,7 @@ func (s *service) List(ctx context.Context) ([]Person, error) {
 			continue
 		}
 
-		people[i].Birthday, err = dateToOutput(person.Birthday, s.location)
+		people[i].Birthday, err = date.FromRFC3339(person.Birthday, s.location)
 		if err != nil {
 			return nil, fmt.Errorf("failed to output date %s: %w", person.Birthday, err)
 		}
@@ -60,7 +61,7 @@ func (s *service) Get(ctx context.Context, id string) (Person, error) {
 	}
 
 	if person.Birthday != "" {
-		person.Birthday, err = dateToOutput(person.Birthday, s.location)
+		person.Birthday, err = date.FromRFC3339(person.Birthday, s.location)
 		if err != nil {
 			return Person{}, fmt.Errorf("failed to output date %s: %w", person.Birthday, err)
 		}
@@ -78,7 +79,7 @@ func (s *service) Add(ctx context.Context, person Person) error {
 
 	if person.Birthday != "" {
 		var err error
-		person.Birthday, err = dateFromInput(person.Birthday, s.location)
+		person.Birthday, err = date.ToRFC3339(person.Birthday, s.location)
 		if err != nil {
 			return fmt.Errorf("failed to input date %s: %w", person.Birthday, err)
 		}
@@ -98,7 +99,7 @@ func (s *service) Update(ctx context.Context, person Person) error {
 
 	if person.Birthday != "" {
 		var err error
-		person.Birthday, err = dateFromInput(person.Birthday, s.location)
+		person.Birthday, err = date.ToRFC3339(person.Birthday, s.location)
 		if err != nil {
 			return fmt.Errorf("failed to input date %s: %w", person.Birthday, err)
 		}

@@ -10,6 +10,8 @@ Tracking people.
 - [ ] Import/export JSON
 - [ ] Documentation
 - [ ] Unit test
+- [ ] Better list
+- [x] Improve date format
 
 ## Install
 

@@ -6,6 +6,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jedib0t/go-pretty/v6 v6.2.7
 	github.com/make-go-great/color-go v0.3.0
+	github.com/make-go-great/date-go v0.3.0
 	github.com/make-go-great/ioe-go v0.4.0
 	github.com/make-go-great/xdg-go v0.2.1
 	github.com/mattn/go-sqlite3 v1.14.12
