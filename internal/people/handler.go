@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/make-go-great/date-go"
 	"github.com/make-go-great/ioe-go"
 )
 
@@ -78,7 +79,7 @@ func (h *handler) Add(ctx context.Context) error {
 	fmt.Printf("Input name: ")
 	person.Name = ioe.ReadInput()
 
-	fmt.Printf("Input birthday (1998-01-18 or 1997/04/01, month before day): ")
+	fmt.Printf("Input birthday (example %s): ", date.SupportDateFormats())
 	person.Birthday = ioe.ReadInputEmpty()
 
 	// TODO: check valid phone
