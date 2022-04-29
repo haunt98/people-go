@@ -17,6 +17,7 @@ type Handler interface {
 	Update(ctx context.Context) error
 	Remove(ctx context.Context) error
 	Export(ctx context.Context) error
+	Import(ctx context.Context) error
 }
 
 type handler struct {
@@ -228,6 +229,25 @@ func (h *handler) Export(ctx context.Context) error {
 	return nil
 }
 
-func (h *handler) Import(ctx context.Context, filename string) error {
+func (h *handler) Import(ctx context.Context) error {
+	fmt.Printf("Input filename: ")
+	filename := ioe.ReadInput()
+
+	bytes, err := os.ReadFile(filename)
+	if err != nil {
+		return fmt.Errorf("failed to read file: %w", err)
+	}
+
+	data := WrapPeople{}
+	if err := json.Unmarshal(bytes, &data); err != nil {
+		return fmt.Errorf("json failed to unmarshal: %w", err)
+	}
+
+	for _, person := range data.People {
+		if err := h.service.Add(ctx, person); err != nil {
+			return fmt.Errorf("service failed to add: %w", err)
+		}
+	}
+
 	return nil
 }

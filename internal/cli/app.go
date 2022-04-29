@@ -21,12 +21,14 @@ const (
 	commandUpdate = "update"
 	commandRemove = "remove"
 	commandExport = "export"
+	commandImport = "import"
 
 	usageList   = "list people"
 	usageAdd    = "add person"
 	usageUpdate = "update person"
 	usageRemove = "remove person"
 	usageExport = "export data"
+	usageImport = "import data"
 )
 
 type App struct {
@@ -74,6 +76,11 @@ func NewApp(db *sql.DB, location *time.Location) (*App, error) {
 				Name:   commandExport,
 				Usage:  usageExport,
 				Action: a.RunExport,
+			},
+			{
+				Name:   commandImport,
+				Usage:  usageImport,
+				Action: a.RunImport,
 			},
 		},
 	}
