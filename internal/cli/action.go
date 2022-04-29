@@ -28,3 +28,7 @@ func (a *action) RunUpdate(c *cli.Context) error {
 func (a *action) RunRemove(c *cli.Context) error {
 	return a.peopleHandler.Remove(c.Context)
 }
+
+func (a *action) RunExport(c *cli.Context) error {
+	return a.peopleHandler.Export(c.Context)
+}

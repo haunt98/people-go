@@ -2,6 +2,7 @@ package people
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -15,6 +16,7 @@ type Handler interface {
 	Add(ctx context.Context) error
 	Update(ctx context.Context) error
 	Remove(ctx context.Context) error
+	Export(ctx context.Context) error
 }
 
 type handler struct {
@@ -199,4 +201,33 @@ func (h *handler) Remove(ctx context.Context) error {
 	id := ioe.ReadInput()
 
 	return h.service.Remove(ctx, id)
+}
+
+func (h *handler) Export(ctx context.Context) error {
+	fmt.Printf("Input filename: ")
+	filename := ioe.ReadInput()
+
+	people, err := h.service.List(ctx)
+	if err != nil {
+		return fmt.Errorf("service failed to list: %w", err)
+	}
+
+	data := WrapPeople{
+		People: people,
+	}
+
+	bytes, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		return fmt.Errorf("json failed to marshal indent: %w", err)
+	}
+
+	if err := os.WriteFile(filename, bytes, 0o755); err != nil {
+		return fmt.Errorf("failed to write file: %w", err)
+	}
+
+	return nil
+}
+
+func (h *handler) Import(ctx context.Context, filename string) error {
+	return nil
 }

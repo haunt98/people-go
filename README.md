@@ -15,6 +15,7 @@ Tracking people.
 - [ ] Unit test
 - [ ] Better list
 - [x] Improve date format
+- [ ] Support email
 
 ## Install
 
