@@ -10,7 +10,7 @@ Tracking people.
 - [x] List, add, remove people
 - [x] Init database
 - [x] Save database in OS path
-- [ ] Import/export JSON
+- [x] Import/export JSON
 - [ ] Documentation
 - [ ] Unit test
 - [ ] Better list
