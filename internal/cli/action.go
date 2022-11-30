@@ -1,8 +1,9 @@
 package cli
 
 import (
-	"github.com/haunt98/people-go/internal/people"
 	"github.com/urfave/cli/v2"
+
+	"github.com/haunt98/people-go/internal/people"
 )
 
 type action struct {

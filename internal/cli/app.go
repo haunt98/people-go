@@ -7,9 +7,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/haunt98/people-go/internal/people"
-	"github.com/make-go-great/color-go"
 	"github.com/urfave/cli/v2"
+
+	"github.com/make-go-great/color-go"
+
+	"github.com/haunt98/people-go/internal/people"
 )
 
 const (
