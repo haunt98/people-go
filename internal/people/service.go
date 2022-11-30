@@ -17,10 +17,10 @@ var (
 )
 
 type Service interface {
-	List(ctx context.Context) ([]Person, error)
-	Get(ctx context.Context, id string) (Person, error)
-	Add(ctx context.Context, person Person) error
-	Update(ctx context.Context, person Person) error
+	List(ctx context.Context) ([]*Person, error)
+	Get(ctx context.Context, id string) (*Person, error)
+	Add(ctx context.Context, person *Person) error
+	Update(ctx context.Context, person *Person) error
 	Remove(ctx context.Context, id string) error
 }
 
@@ -36,7 +36,7 @@ func NewService(repo Repository, location *time.Location) Service {
 	}
 }
 
-func (s *service) List(ctx context.Context) ([]Person, error) {
+func (s *service) List(ctx context.Context) ([]*Person, error) {
 	people, err := s.repo.GetPeople(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get people: %w", err)
@@ -56,27 +56,27 @@ func (s *service) List(ctx context.Context) ([]Person, error) {
 	return people, nil
 }
 
-func (s *service) Get(ctx context.Context, id string) (Person, error) {
+func (s *service) Get(ctx context.Context, id string) (*Person, error) {
 	if id == "" {
-		return Person{}, ErrEmptyID
+		return nil, ErrEmptyID
 	}
 
 	person, err := s.repo.GetPerson(ctx, id)
 	if err != nil {
-		return Person{}, fmt.Errorf("failed to get person: %w", err)
+		return nil, fmt.Errorf("failed to get person: %w", err)
 	}
 
 	if person.Birthday != "" {
 		person.Birthday, err = date.FromRFC3339(person.Birthday, s.location)
 		if err != nil {
-			return Person{}, fmt.Errorf("failed to output date %s: %w", person.Birthday, err)
+			return nil, fmt.Errorf("failed to output date %s: %w", person.Birthday, err)
 		}
 	}
 
 	return person, nil
 }
 
-func (s *service) Add(ctx context.Context, person Person) error {
+func (s *service) Add(ctx context.Context, person *Person) error {
 	person.ID = uuid.NewString()
 
 	if err := validatePerson(person); err != nil {
@@ -98,7 +98,7 @@ func (s *service) Add(ctx context.Context, person Person) error {
 	return nil
 }
 
-func (s *service) Update(ctx context.Context, person Person) error {
+func (s *service) Update(ctx context.Context, person *Person) error {
 	if err := validatePerson(person); err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func (s *service) Remove(ctx context.Context, id string) error {
 	return nil
 }
 
-func validatePerson(person Person) error {
+func validatePerson(person *Person) error {
 	if person.ID == "" {
 		return ErrEmptyID
 	}

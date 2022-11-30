@@ -24,5 +24,5 @@ type Person struct {
 }
 
 type WrapPeople struct {
-	People []Person `json:"people"`
+	People []*Person `json:"people"`
 }

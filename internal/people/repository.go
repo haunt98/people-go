@@ -87,10 +87,10 @@ WHERE id = ?
 )
 
 type Repository interface {
-	GetPeople(ctx context.Context) ([]Person, error)
-	GetPerson(ctx context.Context, id string) (Person, error)
-	InsertPeople(ctx context.Context, person Person) error
-	UpdatePeople(ctx context.Context, person Person) error
+	GetPeople(ctx context.Context) ([]*Person, error)
+	GetPerson(ctx context.Context, id string) (*Person, error)
+	InsertPeople(ctx context.Context, person *Person) error
+	UpdatePeople(ctx context.Context, person *Person) error
 	DeletePeople(ctx context.Context, id string) error
 }
 
@@ -135,8 +135,8 @@ func NewRepository(ctx context.Context, db *sql.DB) (Repository, error) {
 	}, nil
 }
 
-func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
-	people := make([]Person, 0, 64)
+func (r *repo) GetPeople(ctx context.Context) ([]*Person, error) {
+	people := make([]*Person, 0, 64)
 
 	rows, err := r.db.QueryContext(ctx, stmtGetPeople)
 	if err != nil {
@@ -163,7 +163,7 @@ func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
 			return nil, fmt.Errorf("database failed to scan rows: %w", err)
 		}
 
-		people = append(people, person)
+		people = append(people, &person)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("database failed to scan rows: %w", err)
@@ -172,7 +172,7 @@ func (r *repo) GetPeople(ctx context.Context) ([]Person, error) {
 	return people, nil
 }
 
-func (r *repo) GetPerson(ctx context.Context, id string) (Person, error) {
+func (r *repo) GetPerson(ctx context.Context, id string) (*Person, error) {
 	person := Person{}
 
 	row := r.preparedStmts[preparedGetPerson].QueryRowContext(ctx, id)
@@ -191,16 +191,16 @@ func (r *repo) GetPerson(ctx context.Context, id string) (Person, error) {
 		&person.Tiktok,
 	); err != nil {
 		if err == sql.ErrNoRows {
-			return Person{}, fmt.Errorf("person %s not exist", id)
+			return nil, fmt.Errorf("person %s not exist", id)
 		}
 
-		return Person{}, fmt.Errorf("database failed to scan row: %w", err)
+		return nil, fmt.Errorf("database failed to scan row: %w", err)
 	}
 
-	return person, nil
+	return &person, nil
 }
 
-func (r *repo) InsertPeople(ctx context.Context, person Person) error {
+func (r *repo) InsertPeople(ctx context.Context, person *Person) error {
 	if _, err := r.preparedStmts[preparedInsertPeople].ExecContext(ctx,
 		person.ID,
 		person.Name,
@@ -221,7 +221,7 @@ func (r *repo) InsertPeople(ctx context.Context, person Person) error {
 	return nil
 }
 
-func (r *repo) UpdatePeople(ctx context.Context, person Person) error {
+func (r *repo) UpdatePeople(ctx context.Context, person *Person) error {
 	if _, err := r.preparedStmts[preparedUpdatePeople].ExecContext(ctx,
 		person.Name,
 		person.Birthday,

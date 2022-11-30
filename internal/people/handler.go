@@ -114,7 +114,7 @@ func (h *handler) Add(ctx context.Context) error {
 	fmt.Printf("Input Tiktok: ")
 	person.Tiktok = ioe.ReadInputEmpty()
 
-	return h.service.Add(ctx, person)
+	return h.service.Add(ctx, &person)
 }
 
 func (h *handler) Update(ctx context.Context) error {
