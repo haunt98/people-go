@@ -7,9 +7,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/haunt98/people-go/internal/cli"
+	_ "modernc.org/sqlite"
+
 	"github.com/make-go-great/xdg-go"
-	_ "github.com/mattn/go-sqlite3"
+
+	"github.com/haunt98/people-go/internal/cli"
 )
 
 const dataFilename = "data.sqlite3"
@@ -19,7 +21,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	db, err := sql.Open("sqlite3", getDataFilePath())
+	db, err := sql.Open("sqlite", getDataFilePath())
 	if err != nil {
 		log.Fatalln(err)
 	}
