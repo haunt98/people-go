@@ -11,6 +11,11 @@ import (
 	"github.com/make-go-great/date-go"
 )
 
+var (
+	ErrEmptyID   = errors.New("empty id")
+	ErrEmptyName = errors.New("empty name")
+)
+
 type Service interface {
 	List(ctx context.Context) ([]Person, error)
 	Get(ctx context.Context, id string) (Person, error)
@@ -53,7 +58,7 @@ func (s *service) List(ctx context.Context) ([]Person, error) {
 
 func (s *service) Get(ctx context.Context, id string) (Person, error) {
 	if id == "" {
-		return Person{}, errors.New("empty id")
+		return Person{}, ErrEmptyID
 	}
 
 	person, err := s.repo.GetPerson(ctx, id)
@@ -115,7 +120,7 @@ func (s *service) Update(ctx context.Context, person Person) error {
 
 func (s *service) Remove(ctx context.Context, id string) error {
 	if id == "" {
-		return errors.New("empty id")
+		return ErrEmptyID
 	}
 
 	if err := s.repo.DeletePeople(ctx, id); err != nil {
@@ -127,11 +132,11 @@ func (s *service) Remove(ctx context.Context, id string) error {
 
 func validatePerson(person Person) error {
 	if person.ID == "" {
-		return errors.New("empty id")
+		return ErrEmptyID
 	}
 
 	if person.Name == "" {
-		return errors.New("empty name")
+		return ErrEmptyName
 	}
 
 	return nil
