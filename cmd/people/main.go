@@ -9,12 +9,16 @@ import (
 
 	_ "modernc.org/sqlite"
 
+	"github.com/make-go-great/color-go"
 	"github.com/make-go-great/xdg-go"
 
 	"github.com/haunt98/people-go/internal/cli"
 )
 
-const dataFilename = "data.sqlite3"
+const (
+	appName      = "people"
+	dataFilename = "data.sqlite3"
+)
 
 func main() {
 	if err := os.MkdirAll(getDataDirPath(), 0o755); err != nil {
@@ -23,19 +27,22 @@ func main() {
 
 	db, err := sql.Open("sqlite", getDataFilePath())
 	if err != nil {
-		log.Fatalln(err)
+		color.PrintAppError(appName, err.Error())
+		return
 	}
 	defer db.Close()
 
 	// Shout out to Sai Gon, Viet Nam
 	location, err := time.LoadLocation("Asia/Ho_Chi_Minh")
 	if err != nil {
-		log.Fatalln(err)
+		color.PrintAppError(appName, err.Error())
+		return
 	}
 
 	app, err := cli.NewApp(db, location)
 	if err != nil {
-		log.Fatalln(err)
+		color.PrintAppError(appName, err.Error())
+		return
 	}
 
 	app.Run()

@@ -223,7 +223,7 @@ func (h *handler) Export(ctx context.Context) error {
 		return fmt.Errorf("json failed to marshal indent: %w", err)
 	}
 
-	if err := os.WriteFile(filename, bytes, 0o755); err != nil {
+	if err := os.WriteFile(filename, bytes, 0o600); err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
 

@@ -3,6 +3,7 @@ package people
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 )
 
@@ -85,6 +86,8 @@ FROM people
 WHERE id = ?
 `
 )
+
+var ErrDatabaseNotExist = errors.New("database not exist")
 
 type Repository interface {
 	GetPeople(ctx context.Context) ([]*Person, error)
@@ -190,8 +193,8 @@ func (r *repo) GetPerson(ctx context.Context, id string) (*Person, error) {
 		&person.Instagram,
 		&person.Tiktok,
 	); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("person %s not exist", id)
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, fmt.Errorf("person [%s] not exist: %w", id, ErrDatabaseNotExist)
 		}
 
 		return nil, fmt.Errorf("database failed to scan row: %w", err)
