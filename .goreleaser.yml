@@ -5,11 +5,17 @@ builds:
   - main: ./cmd/people
     goos:
       - linux
+      - windows
       - darwin
     goarch:
       - amd64
       - arm64
 universal_binaries:
   - replace: true
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
 changelog:
-  skip: true
+  skip: false
+  use: github
