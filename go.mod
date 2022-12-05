@@ -9,7 +9,7 @@ require (
 	github.com/make-go-great/date-go v0.4.0
 	github.com/make-go-great/ioe-go v0.4.0
 	github.com/make-go-great/xdg-go v0.2.1
-	github.com/urfave/cli/v2 v2.23.5
+	github.com/urfave/cli/v2 v2.23.6
 	modernc.org/sqlite v1.20.0
 )
 
