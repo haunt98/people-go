@@ -54,28 +54,31 @@ func (h *handler) Add(ctx context.Context) error {
 	fmt.Printf("Input phone: ")
 	person.Phone = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input CMND: ")
-	person.VNCMND = ioe.ReadInputEmpty()
-
-	fmt.Printf("Input MST: ")
-	person.VNMST = ioe.ReadInputEmpty()
-
-	fmt.Printf("Input BHXH: ")
-	person.VNBHXH = ioe.ReadInputEmpty()
-
 	fmt.Printf("Input University: ")
 	person.University = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input VNG: ")
+	fmt.Printf("Input VNCMND: ")
+	person.VNCMND = ioe.ReadInputEmpty()
+
+	fmt.Printf("Input VNCCCD: ")
+	person.VNCCCD = ioe.ReadInputEmpty()
+
+	fmt.Printf("Input VNMST: ")
+	person.VNMST = ioe.ReadInputEmpty()
+
+	fmt.Printf("Input VNBHXH: ")
+	person.VNBHXH = ioe.ReadInputEmpty()
+
+	fmt.Printf("Input CompanyVNG: ")
 	person.CompanyVNG = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input Facebook: ")
+	fmt.Printf("Input SocialFacebook: ")
 	person.SocialFacebook = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input Instagram: ")
+	fmt.Printf("Input SocialInstagram: ")
 	person.SocialInstagram = ioe.ReadInputEmpty()
 
-	fmt.Printf("Input Tiktok: ")
+	fmt.Printf("Input SocialTiktok: ")
 	person.SocialTiktok = ioe.ReadInputEmpty()
 
 	return h.service.Add(ctx, &person)
@@ -93,67 +96,67 @@ func (h *handler) Update(ctx context.Context) error {
 	fmt.Println("!!! Input empty to keep old value")
 	var val string
 
-	fmt.Printf("Update name, current is %s: ", person.Name)
+	fmt.Printf("Update name, current is [%s]: ", person.Name)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.Name = val
 	}
 
-	fmt.Printf("Update birthday, current is %s: ", person.Birthday)
+	fmt.Printf("Update birthday, current is [%s]: ", person.Birthday)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.Birthday = val
 	}
 
-	fmt.Printf("Update phone, current is %s: ", person.Phone)
+	fmt.Printf("Update phone, current is [%s]: ", person.Phone)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.Phone = val
 	}
 
-	fmt.Printf("Input CMND, current is: %s", person.VNCMND)
-	val = ioe.ReadInputEmpty()
-	if val != "" {
-		person.VNCMND = val
-	}
-
-	fmt.Printf("Input MST, current is %s: ", person.VNMST)
-	val = ioe.ReadInputEmpty()
-	if val != "" {
-		person.VNMST = val
-	}
-
-	fmt.Printf("Input BHXH, current is %s: ", person.VNBHXH)
-	val = ioe.ReadInputEmpty()
-	if val != "" {
-		person.VNBHXH = val
-	}
-
-	fmt.Printf("Input University, current is %s: ", person.University)
+	fmt.Printf("Input University, current is [%s]: ", person.University)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.University = val
 	}
 
-	fmt.Printf("Input VNG, current is %s: ", person.CompanyVNG)
+	fmt.Printf("Input VNCMND, current is: [%s]", person.VNCMND)
+	val = ioe.ReadInputEmpty()
+	if val != "" {
+		person.VNCMND = val
+	}
+
+	fmt.Printf("Input VNMST, current is [%s]: ", person.VNMST)
+	val = ioe.ReadInputEmpty()
+	if val != "" {
+		person.VNMST = val
+	}
+
+	fmt.Printf("Input VNBHXH, current is [%s]: ", person.VNBHXH)
+	val = ioe.ReadInputEmpty()
+	if val != "" {
+		person.VNBHXH = val
+	}
+
+	fmt.Printf("Input CompanyVNG, current is [%s]: ", person.CompanyVNG)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.CompanyVNG = val
 	}
 
-	fmt.Printf("Input Facebook, current is %s: ", person.SocialFacebook)
+	fmt.Printf("Input SocialFacebook, current is [%s]: ", person.SocialFacebook)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.SocialFacebook = val
 	}
 
-	fmt.Printf("Input Instagram, current is %s: ", person.SocialInstagram)
+	fmt.Printf("Input SocialInstagram, current is [%s]: ", person.SocialInstagram)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.SocialInstagram = ioe.ReadInputEmpty()
 	}
 
-	fmt.Printf("Input Tiktok, current is %s: ", person.SocialTiktok)
+	fmt.Printf("Input SocialTiktok, current is [%s]: ", person.SocialTiktok)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.SocialTiktok = val
@@ -175,7 +178,7 @@ func (h *handler) Export(ctx context.Context) error {
 
 	people, err := h.service.List(ctx)
 	if err != nil {
-		return fmt.Errorf("service failed to list: %w", err)
+		return fmt.Errorf("service: failed to list: %w", err)
 	}
 
 	data := WrapPeople{
@@ -184,11 +187,11 @@ func (h *handler) Export(ctx context.Context) error {
 
 	bytes, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
-		return fmt.Errorf("json failed to marshal indent: %w", err)
+		return fmt.Errorf("json: failed to marshal indent: %w", err)
 	}
 
 	if err := os.WriteFile(filename, bytes, 0o600); err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
+		return fmt.Errorf("os: failed to write file: %w", err)
 	}
 
 	return nil
@@ -200,17 +203,17 @@ func (h *handler) Import(ctx context.Context) error {
 
 	bytes, err := os.ReadFile(filename)
 	if err != nil {
-		return fmt.Errorf("failed to read file: %w", err)
+		return fmt.Errorf("os: failed to read file: %w", err)
 	}
 
 	data := WrapPeople{}
 	if err := json.Unmarshal(bytes, &data); err != nil {
-		return fmt.Errorf("json failed to unmarshal: %w", err)
+		return fmt.Errorf("json: failed to unmarshal: %w", err)
 	}
 
 	for _, person := range data.People {
 		if err := h.service.Add(ctx, person); err != nil {
-			return fmt.Errorf("service failed to add: %w", err)
+			return fmt.Errorf("service: failed to add: %w", err)
 		}
 	}
 
