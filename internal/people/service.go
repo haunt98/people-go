@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/make-go-great/date-go"
+	"github.com/segmentio/ksuid"
 )
 
 var (
@@ -77,7 +76,10 @@ func (s *service) Get(ctx context.Context, id string) (*Person, error) {
 }
 
 func (s *service) Add(ctx context.Context, person *Person) error {
-	person.ID = uuid.NewString()
+	if person.ID == "" {
+		// Be careful, it can panic
+		person.ID = ksuid.New().String()
+	}
 
 	if err := validatePerson(person); err != nil {
 		return err

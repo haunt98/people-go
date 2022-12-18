@@ -3,12 +3,12 @@ module github.com/haunt98/people-go
 go 1.18
 
 require (
-	github.com/google/uuid v1.3.0
 	github.com/jedib0t/go-pretty/v6 v6.4.3
 	github.com/make-go-great/color-go v0.4.1
 	github.com/make-go-great/date-go v0.4.0
 	github.com/make-go-great/ioe-go v0.4.0
 	github.com/make-go-great/xdg-go v0.2.1
+	github.com/segmentio/ksuid v1.0.4
 	github.com/urfave/cli/v2 v2.23.7
 	modernc.org/sqlite v1.20.0
 )
@@ -16,6 +16,7 @@ require (
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fatih/color v1.13.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect

@@ -61,14 +61,14 @@ func (h *handler) List(ctx context.Context) error {
 			person.Name,
 			person.Birthday,
 			person.Phone,
-			person.CMND,
-			person.MST,
-			person.BHXH,
+			person.VNCMND,
+			person.VNMST,
+			person.VNBHXH,
 			person.University,
-			person.VNG,
-			person.Facebook,
-			person.Instagram,
-			person.Tiktok,
+			person.CompanyVNG,
+			person.SocialFacebook,
+			person.SocialInstagram,
+			person.SocialTiktok,
 		})
 	}
 
@@ -91,28 +91,28 @@ func (h *handler) Add(ctx context.Context) error {
 	person.Phone = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input CMND: ")
-	person.CMND = ioe.ReadInputEmpty()
+	person.VNCMND = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input MST: ")
-	person.MST = ioe.ReadInputEmpty()
+	person.VNMST = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input BHXH: ")
-	person.BHXH = ioe.ReadInputEmpty()
+	person.VNBHXH = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input University: ")
 	person.University = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input VNG: ")
-	person.VNG = ioe.ReadInputEmpty()
+	person.CompanyVNG = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input Facebook: ")
-	person.Facebook = ioe.ReadInputEmpty()
+	person.SocialFacebook = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input Instagram: ")
-	person.Instagram = ioe.ReadInputEmpty()
+	person.SocialInstagram = ioe.ReadInputEmpty()
 
 	fmt.Printf("Input Tiktok: ")
-	person.Tiktok = ioe.ReadInputEmpty()
+	person.SocialTiktok = ioe.ReadInputEmpty()
 
 	return h.service.Add(ctx, &person)
 }
@@ -147,22 +147,22 @@ func (h *handler) Update(ctx context.Context) error {
 		person.Phone = val
 	}
 
-	fmt.Printf("Input CMND, current is: %s", person.CMND)
+	fmt.Printf("Input CMND, current is: %s", person.VNCMND)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.CMND = val
+		person.VNCMND = val
 	}
 
-	fmt.Printf("Input MST, current is %s: ", person.MST)
+	fmt.Printf("Input MST, current is %s: ", person.VNMST)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.MST = val
+		person.VNMST = val
 	}
 
-	fmt.Printf("Input BHXH, current is %s: ", person.BHXH)
+	fmt.Printf("Input BHXH, current is %s: ", person.VNBHXH)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.BHXH = val
+		person.VNBHXH = val
 	}
 
 	fmt.Printf("Input University, current is %s: ", person.University)
@@ -171,28 +171,28 @@ func (h *handler) Update(ctx context.Context) error {
 		person.University = val
 	}
 
-	fmt.Printf("Input VNG, current is %s: ", person.VNG)
+	fmt.Printf("Input VNG, current is %s: ", person.CompanyVNG)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.VNG = val
+		person.CompanyVNG = val
 	}
 
-	fmt.Printf("Input Facebook, current is %s: ", person.Facebook)
+	fmt.Printf("Input Facebook, current is %s: ", person.SocialFacebook)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.Facebook = val
+		person.SocialFacebook = val
 	}
 
-	fmt.Printf("Input Instagram, current is %s: ", person.Instagram)
+	fmt.Printf("Input Instagram, current is %s: ", person.SocialInstagram)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.Instagram = ioe.ReadInputEmpty()
+		person.SocialInstagram = ioe.ReadInputEmpty()
 	}
 
-	fmt.Printf("Input Tiktok, current is %s: ", person.Tiktok)
+	fmt.Printf("Input Tiktok, current is %s: ", person.SocialTiktok)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.Tiktok = val
+		person.SocialTiktok = val
 	}
 
 	return h.service.Update(ctx, person)
