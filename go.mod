@@ -3,7 +3,6 @@ module github.com/haunt98/people-go
 go 1.18
 
 require (
-	github.com/jedib0t/go-pretty/v6 v6.4.3
 	github.com/make-go-great/color-go v0.4.1
 	github.com/make-go-great/date-go v0.4.0
 	github.com/make-go-great/ioe-go v0.4.0
@@ -20,9 +19,7 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/mod v0.3.0 // indirect

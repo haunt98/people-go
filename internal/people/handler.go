@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jedib0t/go-pretty/v6/table"
-
 	"github.com/make-go-great/date-go"
 	"github.com/make-go-great/ioe-go"
 )
@@ -37,42 +35,8 @@ func (h *handler) List(ctx context.Context) error {
 		return err
 	}
 
-	// https://github.com/jedib0t/go-pretty/tree/main/table
-	tableWriter := table.NewWriter()
-	tableWriter.SetOutputMirror(os.Stdout)
-	tableWriter.AppendHeader(table.Row{
-		"ID",
-		"Name",
-		"Birthday",
-		"Phone",
-		"CMND",
-		"MST",
-		"BHXH",
-		"University",
-		"VNG",
-		"Facebook",
-		"Instagram",
-		"Tiktok",
-	})
-
-	for _, person := range people {
-		tableWriter.AppendRow(table.Row{
-			person.ID,
-			person.Name,
-			person.Birthday,
-			person.Phone,
-			person.VNCMND,
-			person.VNMST,
-			person.VNBHXH,
-			person.University,
-			person.CompanyVNG,
-			person.SocialFacebook,
-			person.SocialInstagram,
-			person.SocialTiktok,
-		})
-	}
-
-	tableWriter.Render()
+	// TODO: Use https://github.com/charmbracelet/bubbletea
+	fmt.Println(people)
 
 	return nil
 }
