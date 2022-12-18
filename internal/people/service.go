@@ -41,17 +41,6 @@ func (s *service) List(ctx context.Context) ([]*Person, error) {
 		return nil, fmt.Errorf("repo: failed to get people: %w", err)
 	}
 
-	for i, person := range people {
-		if person.Birthday == "" {
-			continue
-		}
-
-		people[i].Birthday, err = date.FromRFC3339(person.Birthday, s.location)
-		if err != nil {
-			return nil, fmt.Errorf("date: failed to output date %s: %w", person.Birthday, err)
-		}
-	}
-
 	return people, nil
 }
 
@@ -63,13 +52,6 @@ func (s *service) Get(ctx context.Context, id string) (*Person, error) {
 	person, err := s.repo.GetPerson(ctx, id)
 	if err != nil {
 		return nil, fmt.Errorf("repo: failed to get person: %w", err)
-	}
-
-	if person.Birthday != "" {
-		person.Birthday, err = date.FromRFC3339(person.Birthday, s.location)
-		if err != nil {
-			return nil, fmt.Errorf("date: failed to output date %s: %w", person.Birthday, err)
-		}
 	}
 
 	return person, nil
@@ -87,9 +69,9 @@ func (s *service) Add(ctx context.Context, person *Person) error {
 
 	if person.Birthday != "" {
 		var err error
-		person.Birthday, err = date.ToRFC3339(person.Birthday, s.location)
+		person.Birthday, err = date.ToDefaultDate(person.Birthday, s.location)
 		if err != nil {
-			return fmt.Errorf("date: failed to input date %s: %w", person.Birthday, err)
+			return fmt.Errorf("date: failed to default date [%s]: %w", person.Birthday, err)
 		}
 	}
 
@@ -107,9 +89,9 @@ func (s *service) Update(ctx context.Context, person *Person) error {
 
 	if person.Birthday != "" {
 		var err error
-		person.Birthday, err = date.ToRFC3339(person.Birthday, s.location)
+		person.Birthday, err = date.ToDefaultDate(person.Birthday, s.location)
 		if err != nil {
-			return fmt.Errorf("date: failed to input date %s: %w", person.Birthday, err)
+			return fmt.Errorf("date: failed to default date [%s]: %w", person.Birthday, err)
 		}
 	}
 
