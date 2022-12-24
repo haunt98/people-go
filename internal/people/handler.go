@@ -35,8 +35,10 @@ func (h *handler) List(ctx context.Context) error {
 		return err
 	}
 
-	// TODO: Use https://github.com/charmbracelet/bubbletea
-	fmt.Println(people)
+	for i, person := range people {
+		fmt.Printf("%d: %s\n", i, person.Name)
+		fmt.Println(person.Pretty("\t"))
+	}
 
 	return nil
 }
