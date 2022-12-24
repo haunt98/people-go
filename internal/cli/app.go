@@ -24,6 +24,7 @@ const (
 	commandRemove = "remove"
 	commandExport = "export"
 	commandImport = "import"
+	commandDrop   = "drop"
 
 	usageList   = "list people"
 	usageAdd    = "add person"
@@ -31,6 +32,7 @@ const (
 	usageRemove = "remove person"
 	usageExport = "export data"
 	usageImport = "import data"
+	usageDrop   = "drop all data (be careful)"
 )
 
 type App struct {
@@ -83,6 +85,11 @@ func NewApp(db *sql.DB, location *time.Location) (*App, error) {
 				Name:   commandImport,
 				Usage:  usageImport,
 				Action: a.RunImport,
+			},
+			{
+				Name:   commandDrop,
+				Usage:  usageDrop,
+				Action: a.RunDrop,
 			},
 		},
 	}

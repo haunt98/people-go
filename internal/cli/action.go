@@ -37,3 +37,7 @@ func (a *action) RunExport(c *cli.Context) error {
 func (a *action) RunImport(c *cli.Context) error {
 	return a.peopleHandler.Import(c.Context)
 }
+
+func (a *action) RunDrop(c *cli.Context) error {
+	return a.peopleHandler.Drop(c.Context)
+}

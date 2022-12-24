@@ -21,6 +21,7 @@ type Service interface {
 	Add(ctx context.Context, person *Person) error
 	Update(ctx context.Context, person *Person) error
 	Remove(ctx context.Context, id string) error
+	Drop(ctx context.Context) error
 }
 
 type service struct {
@@ -109,6 +110,14 @@ func (s *service) Remove(ctx context.Context, id string) error {
 
 	if err := s.repo.DeletePeople(ctx, id); err != nil {
 		return fmt.Errorf("repo: failed to delete people: %w", err)
+	}
+
+	return nil
+}
+
+func (s *service) Drop(ctx context.Context) error {
+	if err := s.repo.DropPeople(ctx); err != nil {
+		return fmt.Errorf("repo: failed to drop people: %w", err)
 	}
 
 	return nil

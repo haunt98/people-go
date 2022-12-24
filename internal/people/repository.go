@@ -94,6 +94,9 @@ const (
 	DELETE
 	FROM people
 	WHERE id = ?;`
+
+	stmtDropPeople = `--sql
+	DROP TABLE people;`
 )
 
 var ErrDatabaseNotExist = errors.New("database not exist")
@@ -104,6 +107,7 @@ type Repository interface {
 	InsertPeople(ctx context.Context, person *Person) error
 	UpdatePeople(ctx context.Context, person *Person) error
 	DeletePeople(ctx context.Context, id string) error
+	DropPeople(ctx context.Context) error
 }
 
 type repo struct {
@@ -264,6 +268,14 @@ func (r *repo) UpdatePeople(ctx context.Context, person *Person) error {
 
 func (r *repo) DeletePeople(ctx context.Context, id string) error {
 	if _, err := r.preparedStmts[preparedDeletePeople].ExecContext(ctx, id); err != nil {
+		return fmt.Errorf("database: failed to exec: %w", err)
+	}
+
+	return nil
+}
+
+func (r *repo) DropPeople(ctx context.Context) error {
+	if _, err := r.db.ExecContext(ctx, stmtDropPeople); err != nil {
 		return fmt.Errorf("database: failed to exec: %w", err)
 	}
 

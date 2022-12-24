@@ -17,6 +17,7 @@ type Handler interface {
 	Remove(ctx context.Context) error
 	Export(ctx context.Context) error
 	Import(ctx context.Context) error
+	Drop(ctx context.Context) error
 }
 
 type handler struct {
@@ -229,4 +230,8 @@ func (h *handler) Import(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (h *handler) Drop(ctx context.Context) error {
+	return h.service.Drop(ctx)
 }
