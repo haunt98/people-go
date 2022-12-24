@@ -27,6 +27,7 @@ type Person struct {
 	SocialFacebook  string `json:"social_facebook,omitempty"`
 	SocialInstagram string `json:"social_instagram,omitempty"`
 	SocialTiktok    string `json:"social_tiktok,omitempty"`
+	SocialLinkedin  string `json:"social_linkedin,omitempty"`
 }
 
 func (p *Person) Pretty(prefix string) string {
@@ -92,6 +93,11 @@ func (p *Person) Pretty(prefix string) string {
 	if p.SocialTiktok != "" {
 		template += "%sSocialTiktok: %s"
 		values = append(values, prefix, p.SocialTiktok)
+	}
+
+	if p.SocialLinkedin != "" {
+		template += "%sSocialLinkedin: %s"
+		values = append(values, prefix, p.SocialLinkedin)
 	}
 
 	return fmt.Sprintf(template, values...)

@@ -83,6 +83,9 @@ func (h *handler) Add(ctx context.Context) error {
 	fmt.Printf("Input SocialTiktok: ")
 	person.SocialTiktok = ioe.ReadInputEmpty()
 
+	fmt.Printf("Input SocialLinkedin: ")
+	person.SocialLinkedin = ioe.ReadInputEmpty()
+
 	return h.service.Add(ctx, &person)
 }
 
@@ -162,6 +165,12 @@ func (h *handler) Update(ctx context.Context) error {
 	val = ioe.ReadInputEmpty()
 	if val != "" {
 		person.SocialTiktok = val
+	}
+
+	fmt.Printf("Input SocialLinkedin, current is [%s]: ", person.SocialLinkedin)
+	val = ioe.ReadInputEmpty()
+	if val != "" {
+		person.SocialLinkedin = val
 	}
 
 	return h.service.Update(ctx, person)

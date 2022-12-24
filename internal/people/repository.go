@@ -29,7 +29,8 @@ const (
 		company_vng      TEXT,
 		social_facebook  TEXT,
 		social_instagram TEXT,
-		social_tiktok    TEXT
+		social_tiktok    TEXT,
+		social_linkedin  TEXT
 	);`
 
 	stmtGetPeople = `--sql
@@ -45,7 +46,8 @@ const (
 		   company_vng,
 		   social_facebook,
 		   social_instagram,
-		   social_tiktok
+		   social_tiktok,
+		   social_linkedin
 	FROM people;`
 
 	stmtGetPerson = `--sql
@@ -61,14 +63,15 @@ const (
 		   company_vng,
 		   social_facebook,
 		   social_instagram,
-		   social_tiktok
+		   social_tiktok,
+		   social_linkedin
 	FROM people
 	WHERE id = ?;`
 
 	stmtInsertPeople = `--sql
 	INSERT INTO people (id, name, birthday, phone, university, vn_cmnd, vn_cccd, vn_bhxh, vn_mst, company_vng,
-						social_facebook, social_instagram, social_tiktok)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+						social_facebook, social_instagram, social_tiktok, social_linkedin)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
 	stmtUpdatePeople = `--sql
 	UPDATE people
@@ -83,7 +86,8 @@ const (
 		company_vng      = ?,
 		social_facebook  = ?,
 		social_instagram = ?,
-		social_tiktok    = ?
+		social_tiktok    = ?,
+		social_linkedin  = ?
 	WHERE id = ?;`
 
 	stmtDeletePeople = `--sql
@@ -168,6 +172,7 @@ func (r *repo) GetPeople(ctx context.Context) ([]*Person, error) {
 			&person.SocialFacebook,
 			&person.SocialInstagram,
 			&person.SocialTiktok,
+			&person.SocialLinkedin,
 		); err != nil {
 			return nil, fmt.Errorf("database: failed to scan rows: %w", err)
 		}
@@ -199,6 +204,7 @@ func (r *repo) GetPerson(ctx context.Context, id string) (*Person, error) {
 		&person.SocialFacebook,
 		&person.SocialInstagram,
 		&person.SocialTiktok,
+		&person.SocialLinkedin,
 	); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, fmt.Errorf("database: person [%s] not exist: %w", id, ErrDatabaseNotExist)
@@ -225,6 +231,7 @@ func (r *repo) InsertPeople(ctx context.Context, person *Person) error {
 		person.SocialFacebook,
 		person.SocialInstagram,
 		person.SocialTiktok,
+		person.SocialLinkedin,
 	); err != nil {
 		return fmt.Errorf("database: failed to exec: %w", err)
 	}
@@ -246,6 +253,7 @@ func (r *repo) UpdatePeople(ctx context.Context, person *Person) error {
 		person.SocialFacebook,
 		person.SocialInstagram,
 		person.SocialTiktok,
+		person.SocialLinkedin,
 		person.ID,
 	); err != nil {
 		return fmt.Errorf("database: failed to exec: %w", err)
