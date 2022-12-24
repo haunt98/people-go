@@ -159,7 +159,7 @@ func (h *handler) Update(ctx context.Context) error {
 	fmt.Printf("Input SocialInstagram, current is [%s]: ", person.SocialInstagram)
 	val = ioe.ReadInputEmpty()
 	if val != "" {
-		person.SocialInstagram = ioe.ReadInputEmpty()
+		person.SocialInstagram = val
 	}
 
 	fmt.Printf("Input SocialTiktok, current is [%s]: ", person.SocialTiktok)
