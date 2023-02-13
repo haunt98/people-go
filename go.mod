@@ -9,7 +9,7 @@ require (
 	github.com/make-go-great/xdg-go v0.2.1
 	github.com/segmentio/ksuid v1.0.4
 	github.com/urfave/cli/v2 v2.24.3
-	modernc.org/sqlite v1.20.3
+	modernc.org/sqlite v1.20.4
 )
 
 require (
