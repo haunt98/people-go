@@ -8,7 +8,7 @@ require (
 	github.com/make-go-great/ioe-go v0.4.0
 	github.com/make-go-great/xdg-go v0.2.1
 	github.com/segmentio/ksuid v1.0.4
-	github.com/urfave/cli/v2 v2.25.0
+	github.com/urfave/cli/v2 v2.25.1
 	modernc.org/sqlite v1.21.0
 )
 
